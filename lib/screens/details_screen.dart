@@ -14,7 +14,6 @@ class DetailsPage extends StatelessWidget {
       value: Provider.of<CartProvider>(context),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(pets.name),
           actions: [
             IconButton(
               onPressed: () {
@@ -27,58 +26,76 @@ class DetailsPage extends StatelessWidget {
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'assets/${pets.image}',
-                    fit: BoxFit.cover,
-                  ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.asset(
+                          'assets/${pets.image}',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '\$${pets.price}',
+                            style: const TextStyle(
+                                fontSize: 18.0,
+                                color: Colors.deepPurple,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 16.0),
+                          Text(
+                            pets.name,
+                            style: const TextStyle(
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          Text(
+                            '${pets.store}',
+                            style: const TextStyle(fontSize: 18.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  '${pets.name}',
-                  style: const TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  final cartProvider =
+                      Provider.of<CartProvider>(context, listen: false);
+                  cartProvider.add(pets);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${pets.name} added to cart'),
+                      duration:
+                          Duration(seconds: 2), // Adjust the duration as needed
+                    ),
+                  );
+                },
+                child: const Text('Add to Cart'),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  '\$${pets.price}',
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Text(
-                  '${pets.store}',
-                  style: const TextStyle(fontSize: 18.0),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    final cartProvider =
-                        Provider.of<CartProvider>(context, listen: false);
-                    cartProvider.add(pets);
-                  },
-                  child: const Text('Add to Cart'),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
