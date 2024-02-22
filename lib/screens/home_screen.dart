@@ -24,9 +24,10 @@ class _ProductsPageState extends State<ProductsPage> {
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       title: const Text(
-        "Pets",
+        "Pet Shops",
         style: TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.bold,
         ),
       ),
       backgroundColor: Colors.white,
