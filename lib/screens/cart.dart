@@ -119,7 +119,7 @@ class CartPage extends StatelessWidget {
       onPressed: () {
         Provider.of<CartProvider>(context, listen: false).removeAll();
       },
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.deepPurple,
       child: const Icon(Icons.delete, color: Colors.white),
     );
   }

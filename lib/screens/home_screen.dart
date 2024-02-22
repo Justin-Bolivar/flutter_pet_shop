@@ -4,7 +4,7 @@ import 'package:flutter_pet_shop/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProductsPage extends StatefulWidget {
-  const ProductsPage({Key? key}) : super(key: key);
+  const ProductsPage({super.key});
 
   @override
   _ProductsPageState createState() => _ProductsPageState();

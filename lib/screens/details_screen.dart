@@ -87,8 +87,7 @@ class DetailsPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('${pets.name} added to cart'),
-                      duration:
-                          Duration(seconds: 2), // Adjust the duration as needed
+                      duration: Duration(seconds: 2),
                     ),
                   );
                 },
