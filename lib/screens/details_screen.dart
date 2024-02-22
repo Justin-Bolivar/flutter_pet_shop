@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pet_shop/const.dart';
+import 'package:flutter_pet_shop/providers/details_prrovider.dart';
+import 'package:provider/provider.dart';
 
 class PetDetailScreen extends StatelessWidget {
-  final Pets pet;
-
-  const PetDetailScreen({Key? key, required this.pet}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final detailProvider = Provider.of<DetailProvider>(context);
+    final pet = detailProvider.selectedPet;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          pet.name,
+          pet!.name,
           style: const TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
