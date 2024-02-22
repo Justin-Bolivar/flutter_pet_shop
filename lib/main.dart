@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pet_shop/const.dart';
 import 'package:flutter_pet_shop/screens/details_screen.dart';
 import 'package:provider/provider.dart';
 import 'providers/cart_provider.dart';
@@ -29,8 +30,10 @@ class MyApp extends StatelessWidget {
       initialRoute: "/products",
       routes: {
         "/products": (context) => const ProductsPage(),
-        "/details": (context) =>
-            PetDetailScreen(), // replace somePetObject with the actual pet object
+        "/details": (context) {
+          final Pets pets = ModalRoute.of(context)!.settings.arguments as Pets;
+          return DetailsPage(pets: pets);
+        },
         "/cart": (context) => const CartPage(),
       },
     );
