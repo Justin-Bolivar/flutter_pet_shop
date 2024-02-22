@@ -87,7 +87,15 @@ class _ProductsPageState extends State<ProductsPage> {
         Pets product = filteredPets[index];
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, "/details_screen", arguments: product);
+            Navigator.of(context).pushNamed(
+              '/details',
+              arguments: Pets(
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                store: product.store,
+              ),
+            );
           },
           child: Card(
             elevation: 4,
