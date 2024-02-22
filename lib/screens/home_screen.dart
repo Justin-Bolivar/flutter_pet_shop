@@ -3,8 +3,15 @@ import 'package:flutter_pet_shop/const.dart';
 import 'package:flutter_pet_shop/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 
-class ProductsPage extends StatelessWidget {
-  const ProductsPage({Key? key});
+class ProductsPage extends StatefulWidget {
+  const ProductsPage({Key? key}) : super(key: key);
+
+  @override
+  _ProductsPageState createState() => _ProductsPageState();
+}
+
+class _ProductsPageState extends State<ProductsPage> {
+  String _searchText = '';
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +42,37 @@ class ProductsPage extends StatelessWidget {
           ),
         ),
       ],
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(48.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search Pets',
+              prefixIcon: const Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(40.0),
+              ),
+            ),
+            onChanged: (value) {
+              setState(() {
+                _searchText = value;
+              });
+            },
+          ),
+        ),
+      ),
     );
   }
 
   Widget _buildUI(BuildContext context) {
     CartProvider cartProvider = Provider.of<CartProvider>(context);
+    final filteredPets = PETS.where((pet) {
+      final name = pet.name.toLowerCase();
+      final searchText = _searchText.toLowerCase();
+      return name.contains(searchText);
+    }).toList();
+
     return GridView.builder(
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -48,9 +81,9 @@ class ProductsPage extends StatelessWidget {
         mainAxisSpacing: 16,
         childAspectRatio: 0.7,
       ),
-      itemCount: PETS.length,
+      itemCount: filteredPets.length,
       itemBuilder: (context, index) {
-        Pets product = PETS[index];
+        Pets product = filteredPets[index];
         return GestureDetector(
           onTap: () {
             Navigator.pushNamed(context, "/details_screen", arguments: product);
@@ -78,7 +111,7 @@ class ProductsPage extends StatelessWidget {
                   child: Text(
                     product.name,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -92,19 +125,23 @@ class ProductsPage extends StatelessWidget {
                         "\$${product.price.toString()}",
                         style: const TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          color: Colors.black,
                         ),
                       ),
-                      Checkbox(
-                        value: cartProvider.items.contains(product),
-                        onChanged: (value) {
-                          if (value == true) {
-                            cartProvider.add(product);
-                          } else {
+                      IconButton(
+                        onPressed: () {
+                          if (cartProvider.items.contains(product)) {
                             cartProvider.remove(product);
+                          } else {
+                            cartProvider.add(product);
                           }
                         },
+                        icon: Icon(
+                          cartProvider.items.contains(product)
+                              ? Icons.shopping_cart
+                              : Icons.add_shopping_cart,
+                          color: Colors.deepPurple,
+                        ),
                       ),
                     ],
                   ),
